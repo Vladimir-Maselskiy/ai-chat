@@ -13,6 +13,7 @@ import { WellcomeMessage } from '@/WellcomeMessage/WellcomeMessage';
 import { UserLogIn } from '@/UserLogIn/UserLogIn';
 import { sortContacts } from '../src/utils/sortContacts';
 import { IContact } from './interfaces/interfaces';
+import { Space } from 'antd';
 
 export function App() {
   const emptyArray = useRef(true);
@@ -65,26 +66,32 @@ export function App() {
   };
 
   return (
-    <Box display="flex" height="100vh" width="100vw">
+    <Space style={{ display: 'flex', height: '100vh', width: '100vw' }}>
       {contacts.length > 0 && (
-        <Box display="flex" width={1} flexDirection="row">
-          <Box
-            display="flex"
-            flexDirection="column"
-            width={1 / 3}
-            minWidth="170px"
-            borderRight="1px solid #ccc"
+        <Space style={{ display: 'flex' }}>
+          <Space
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              width: 1 / 3,
+              minWidth: 170,
+              borderRight: '1px solid #ccc',
+            }}
           >
-            <Box
-              display="flex"
-              justifyContent="space-between"
-              minHeight={140}
-              p={20}
-              flexDirection="column"
-              bg="#f5f5f5"
-              borderBottom="1px solid #ccc"
+            <Space
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                minHeight: 140,
+                padding: 20,
+                flexDirection: 'column',
+                background: '#f5f5f5',
+                borderBottom: '1px solid #ccc',
+              }}
             >
-              <Box display="flex" justifyContent="space-between">
+              <Space
+                style={{ display: 'flex', justifyContent: 'space-between' }}
+              >
                 {userLogin ? (
                   <UserLogIn userLogin={userLogin} />
                 ) : (
@@ -121,22 +128,24 @@ export function App() {
                     isSignedIn={true}
                   />
                 )} */}
-              </Box>
+              </Space>
 
               <Filter setFilter={setFilter} />
-            </Box>
+            </Space>
             <ContactList
               contacts={visibleСontacts}
               onContactClick={onContactClick}
             />
-          </Box>
-          <Box
-            position="relative"
-            display="flex"
-            flexDirection="column"
-            justifyContent="space-between"
-            height="100%"
-            width="100%"
+          </Space>
+          <Space
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              position: 'relative',
+              justifyContent: 'space-between',
+              height: '100%',
+              width: '100%',
+            }}
           >
             {currentContact?.id ? (
               <CurrentContact currentContact={currentContact}></CurrentContact>
@@ -152,9 +161,9 @@ export function App() {
                 setContacts={setContacts}
               ></MessageCreator>
             )}
-          </Box>
-        </Box>
+          </Space>
+        </Space>
       )}
-    </Box>
+    </Space>
   );
 }

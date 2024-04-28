@@ -2,6 +2,7 @@ import { Box } from '@/Box/Box';
 import { ContactItem } from '@/ContactItem/ContactItem';
 import { ContactListStyled } from './ContactList.styled';
 import { IContact } from '../../interfaces/interfaces';
+import { Space } from 'antd';
 
 interface IProps {
   contacts: IContact[];
@@ -11,15 +12,17 @@ interface IProps {
 export const ContactList = ({ contacts, onContactClick }: IProps) => {
   return (
     <>
-      <Box
-        height="80px"
-        display="flex"
-        alignItems="center"
-        pl="10px"
-        color="#4e9fc5"
+      <Space
+        style={{
+          height: '80px',
+          display: 'flex',
+          alignItems: 'center',
+          paddingLeft: 10,
+          color: '#4e9fc5',
+        }}
       >
         <h2>Chats</h2>
-      </Box>
+      </Space>
 
       <ContactListStyled>
         {contacts.map(contact => (

@@ -15,7 +15,6 @@ export const CurrentContact = ({ currentContact }: IProps) => {
     id && (
       <Box
         display="flex"
-        flexDirection="row"
         alignItems="center"
         width="100%"
         height="70px"

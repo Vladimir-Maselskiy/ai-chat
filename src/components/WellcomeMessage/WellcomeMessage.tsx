@@ -1,19 +1,21 @@
 import { Box } from '@/Box/Box';
+import { Space } from 'antd';
 
 export const WellcomeMessage = () => {
   return (
-    <Box
-      display="flex"
-      flexDirection="row"
-      alignItems="center"
-      width="100%"
-      height="70px"
-      color="#494848"
-      borderBottom="1px solid #ccc"
-      padding="10px"
-      bg="#f5f5f5"
+    <Space
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        width: '100%',
+        height: '70px',
+        color: '#494848',
+        borderBottom: '1px solid #ccc',
+        padding: '10px',
+        background: '#f5f5f5',
+      }}
     >
       Wellcome! Click by any contact and start chating
-    </Box>
+    </Space>
   );
 };

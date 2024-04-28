@@ -10,6 +10,7 @@ import {
 } from './MessageCreator.styled';
 import { IContact } from '../../interfaces/interfaces';
 import React from 'react';
+import { Space } from 'antd';
 
 interface IProp {
   currentContact: IContact;
@@ -82,16 +83,18 @@ export const MessageCreator = ({ currentContact, setContacts }: IProp) => {
   };
 
   return (
-    <Box
-      position="relative"
-      bottom={0}
-      width="100%"
-      height={90}
-      bg="#f5f5f5"
-      borderTop="1px solid #ccc"
-      display="flex"
-      alignItems="center"
-      padding="10px"
+    <Space
+      style={{
+        position: 'relative',
+        bottom: 0,
+        width: '100%',
+        height: 90,
+        background: '#f5f5f5',
+        borderTop: '1px solid #ccc',
+        display: 'flex',
+        alignItems: 'center',
+        padding: '10px',
+      }}
     >
       <FormStyled onSubmit={onSubmit}>
         <InputStyled
@@ -104,6 +107,6 @@ export const MessageCreator = ({ currentContact, setContacts }: IProp) => {
           <MdOutlineSendStyled size={20} />
         </ButtonStyled>
       </FormStyled>
-    </Box>
+    </Space>
   );
 };
