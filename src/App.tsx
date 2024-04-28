@@ -1,12 +1,16 @@
 import chatGPTLogo from './assets/chatgpt.svg';
 import './App.css';
-import { Space, Typography, Image, Input, Button, Tooltip } from 'antd';
+import { Space, Typography, Image, Input, Button } from 'antd';
 import { SendOutlined } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
+import { Message } from './components/Message/Message';
+import { IMessage } from './interfaces/interfaces';
+import { MessagesList } from './components/MessagesList/MessagesList';
 
 const { Paragraph } = Typography;
 
 function App() {
+  const [messages, setMessages] = useState<IMessage[]>([]);
   const [isSendIconDisabled, setIsSendIconDisabled] = useState(true);
   const [isSendButtonLoading, setIsSendButtonLoading] = useState(false);
   const [messageInputValue, setMessageInputValue] = useState('');
@@ -24,8 +28,13 @@ function App() {
     setMessageInputValue(event.target.value);
   };
 
+  const addMessageToList = (message: IMessage) => {
+    setMessages([...messages, message]);
+  };
+
   const onClickOnSendButton = () => {
     setIsSendButtonLoading(true);
+    addMessageToList({ text: messageInputValue, role: 'user' });
     setTimeout(() => {
       setIsSendButtonLoading(false);
       setMessageInputValue('');
@@ -33,7 +42,7 @@ function App() {
   };
   return (
     <>
-      <Image src={chatGPTLogo} alt="Vite Logo" />
+      <Image src={chatGPTLogo} alt="GPT Logo" />
       <Paragraph strong={true} style={{ marginTop: 10 }}>
         ChatGPT 3.5
       </Paragraph>
@@ -53,6 +62,7 @@ function App() {
           onClick={onClickOnSendButton}
         ></Button>
       </Space.Compact>
+      <MessagesList messages={messages} />
     </>
   );
 }
