@@ -1,70 +1,160 @@
-import chatGPTLogo from './assets/chatgpt.svg';
-import './App.css';
-import { Space, Typography, Image, Input, Button } from 'antd';
-import { SendOutlined } from '@ant-design/icons';
-import { useEffect, useState } from 'react';
-import { Message } from './components/Message/Message';
-import { IMessage } from './interfaces/interfaces';
-import { MessagesList } from './components/MessagesList/MessagesList';
+import { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
+import { Box } from './components/Box/Box';
+import { Filter } from '@/Filter/Filter';
+import { ContactList } from '@/ContactList/ContactList';
+import { Anonymous } from '@/Anonymous/Anonymous';
+import { getVisibleContacts } from '../src/utils/getVisibleContacts';
+import { CurrentContact } from '@/CurrentContact/CurrentContact';
+import { getCurrentContactByID } from './utils/getCurrentContactByID';
+import { MessageCreator } from '@/MessageCreator/MessageCreator';
+import { Messages } from '@/Messages/Messages';
+import { WellcomeMessage } from '@/WellcomeMessage/WellcomeMessage';
+import { UserLogIn } from '@/UserLogIn/UserLogIn';
+import { sortContacts } from '../src/utils/sortContacts';
+import { IContact } from './interfaces/interfaces';
 
-const { Paragraph } = Typography;
-
-function App() {
-  const [messages, setMessages] = useState<IMessage[]>([]);
-  const [isSendIconDisabled, setIsSendIconDisabled] = useState(true);
-  const [isSendButtonLoading, setIsSendButtonLoading] = useState(false);
-  const [messageInputValue, setMessageInputValue] = useState('');
-
-  function getIsSendIconDisabled() {
-    return messageInputValue === '';
-  }
+export function App() {
+  const emptyArray = useRef(true);
+  const [data, setData] = useState<IContact[]>([]);
+  const [contacts, setContacts] = useState<IContact[]>([]);
+  const [visibleСontacts, setVisibleСontacts] = useState<IContact[]>([]);
+  const [filter, setFilter] = useState<string>('');
+  const [currentContact, setCurrentContact] = useState<IContact | null>(null);
+  const [userLogin] = useState(null);
 
   useEffect(() => {
-    setIsSendIconDisabled(getIsSendIconDisabled());
-  }, [messageInputValue]);
+    axios
+      .get('https://62e66c32de23e263792c05a8.mockapi.io/contacts')
+      .then(resp => {
+        setData(resp.data);
+        sortContacts(resp.data, setData);
+      });
+  }, []);
 
-  const onMessageInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target.value);
-    setMessageInputValue(event.target.value);
+  // Error 429 and React.Strict resolve
+  useEffect(() => {
+    if (emptyArray.current) {
+      data.forEach((item, index) => {
+        setTimeout(() => {
+          setContacts(prevState => {
+            return [...prevState, item];
+          });
+        }, index * 50);
+      });
+      if (data.length > 0) {
+        emptyArray.current = false;
+      }
+    }
+  }, [data, emptyArray, contacts]);
+
+  useEffect(() => {
+    setVisibleСontacts(getVisibleContacts(contacts, filter));
+  }, [contacts, filter]);
+
+  useEffect(() => {
+    if (currentContact && currentContact.id) {
+      setCurrentContact(
+        contacts.find(contact => contact.id === currentContact.id) || null
+      );
+    }
+  }, [contacts, currentContact?.id]);
+
+  const onContactClick = (id: string) => {
+    setCurrentContact(getCurrentContactByID(contacts, id));
   };
 
-  const addMessageToList = (message: IMessage) => {
-    setMessages([...messages, message]);
-  };
-
-  const onClickOnSendButton = () => {
-    setIsSendButtonLoading(true);
-    addMessageToList({ text: messageInputValue, role: 'user' });
-    setTimeout(() => {
-      setIsSendButtonLoading(false);
-      setMessageInputValue('');
-    }, 2000);
-  };
   return (
-    <>
-      <Image src={chatGPTLogo} alt="GPT Logo" />
-      <Paragraph strong={true} style={{ marginTop: 10 }}>
-        ChatGPT 3.5
-      </Paragraph>
-      <Paragraph strong={true} style={{ fontSize: 24 }}>
-        How can I help you today?
-      </Paragraph>
-      <Space.Compact style={{ width: '100%' }}>
-        <Input
-          placeholder="Message ChatGPT…"
-          onChange={onMessageInputChange}
-          value={messageInputValue}
-        />
-        <Button
-          disabled={isSendIconDisabled}
-          icon={<SendOutlined />}
-          loading={isSendButtonLoading}
-          onClick={onClickOnSendButton}
-        ></Button>
-      </Space.Compact>
-      <MessagesList messages={messages} />
-    </>
+    <Box display="flex" height="100vh" width="100vw">
+      {contacts.length > 0 && (
+        <Box display="flex" width={1} flexDirection="row">
+          <Box
+            display="flex"
+            flexDirection="column"
+            width={1 / 3}
+            minWidth="170px"
+            borderRight="1px solid #ccc"
+          >
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              minHeight={140}
+              p={20}
+              flexDirection="column"
+              bg="#f5f5f5"
+              borderBottom="1px solid #ccc"
+            >
+              <Box display="flex" justifyContent="space-between">
+                {userLogin ? (
+                  <UserLogIn userLogin={userLogin} />
+                ) : (
+                  <Anonymous />
+                )}
+                {/* {userLogin ? (
+                  <GoogleLogout
+                    clientId={clientId}
+                    buttonText="Log out"
+                    onLogoutSuccess={logOut}
+                    render={renderProps => (
+                      <GoogleButtonStyled
+                        onClick={renderProps.onClick}
+                        disabled={renderProps.disabled}
+                      >
+                        <IoLogOutOutline size={40} color="#767676" />
+                      </GoogleButtonStyled>
+                    )}
+                  />
+                ) : (
+                  <GoogleLogin
+                    clientId="141257002444-3jn6k1q7gtq95d2cjbuo32iusbjh4vah.apps.googleusercontent.com"
+                    render={renderProps => (
+                      <GoogleButtonStyled
+                        onClick={renderProps.onClick}
+                        disabled={renderProps.disabled}
+                      >
+                        <IoLogInOutline size={40} color="#767676" />
+                      </GoogleButtonStyled>
+                    )}
+                    onSuccess={responseGoogleonSuccess}
+                    onFailure={responseGoogleonFailure}
+                    cookiePolicy={'single_host_origin'}
+                    isSignedIn={true}
+                  />
+                )} */}
+              </Box>
+
+              <Filter setFilter={setFilter} />
+            </Box>
+            <ContactList
+              contacts={visibleСontacts}
+              onContactClick={onContactClick}
+            />
+          </Box>
+          <Box
+            position="relative"
+            display="flex"
+            flexDirection="column"
+            justifyContent="space-between"
+            height="100%"
+            width="100%"
+          >
+            {currentContact?.id ? (
+              <CurrentContact currentContact={currentContact}></CurrentContact>
+            ) : (
+              <WellcomeMessage />
+            )}
+            {currentContact?.messages && (
+              <Messages currentContact={currentContact} />
+            )}
+            {currentContact?.id && (
+              <MessageCreator
+                currentContact={currentContact}
+                setContacts={setContacts}
+              ></MessageCreator>
+            )}
+          </Box>
+        </Box>
+      )}
+    </Box>
   );
 }
-
-export default App;
