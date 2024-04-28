@@ -1,4 +1,4 @@
-import { Box } from '@/Box/Box';
+import { Space } from 'antd';
 import { AiOutlineSearchStyled } from './Filter.styled';
 import { InputStyled } from './Filter.styled';
 
@@ -12,7 +12,7 @@ export const Filter = ({ setFilter }: IProp) => {
   };
 
   return (
-    <Box position="relative">
+    <Space style={{ position: 'relative' }}>
       <InputStyled
         onChange={onChange}
         type="text"
@@ -21,6 +21,6 @@ export const Filter = ({ setFilter }: IProp) => {
         placeholder="Search or start new chat"
       />
       <AiOutlineSearchStyled />
-    </Box>
+    </Space>
   );
 };

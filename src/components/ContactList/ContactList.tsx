@@ -1,4 +1,3 @@
-import { Box } from '@/Box/Box';
 import { ContactItem } from '@/ContactItem/ContactItem';
 import { ContactListStyled } from './ContactList.styled';
 import { IContact } from '../../interfaces/interfaces';

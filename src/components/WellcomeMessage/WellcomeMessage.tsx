@@ -1,4 +1,3 @@
-import { Box } from '@/Box/Box';
 import { Space } from 'antd';
 
 export const WellcomeMessage = () => {

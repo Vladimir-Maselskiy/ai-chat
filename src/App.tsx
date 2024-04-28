@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { Box } from './components/Box/Box';
 import { Filter } from '@/Filter/Filter';
 import { ContactList } from '@/ContactList/ContactList';
 import { Anonymous } from '@/Anonymous/Anonymous';

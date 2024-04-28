@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { nanoid } from 'nanoid';
-import { Box } from '@/Box/Box';
 
 import {
   ButtonStyled,

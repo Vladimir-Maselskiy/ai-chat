@@ -1,4 +1,4 @@
-import { Box } from '@/Box/Box';
+import { Space } from 'antd';
 
 interface IProps {
   userLogin: {
@@ -9,9 +9,9 @@ interface IProps {
 
 export const UserLogIn = ({ userLogin }: IProps) => {
   return (
-    <Box>
+    <Space>
       <p>{userLogin.Ad}</p>
       <p>{userLogin.cu}</p>
-    </Box>
+    </Space>
   );
 };
