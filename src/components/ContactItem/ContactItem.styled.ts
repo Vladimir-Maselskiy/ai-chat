@@ -6,8 +6,11 @@ export const ContactItemStyled = styled.li`
   flex-direction: row;
   align-items: center;
   height: 80px;
+  min-height: 80px;
   border-bottom: 1px solid #ccc;
   padding: 0 10px;
+  max-width: 100%;
+  overflow: hidden;
   &:hover {
     cursor: pointer;
     background-color: #f5f5f5;

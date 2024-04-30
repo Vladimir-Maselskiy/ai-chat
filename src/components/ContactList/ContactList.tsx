@@ -1,7 +1,7 @@
 import { ContactItem } from '@/ContactItem/ContactItem';
 import { ContactListStyled } from './ContactList.styled';
 import { IContact } from '../../interfaces/interfaces';
-import { Space } from 'antd';
+import { Flex } from 'antd';
 
 interface IProps {
   contacts: IContact[];
@@ -11,17 +11,15 @@ interface IProps {
 export const ContactList = ({ contacts, onContactClick }: IProps) => {
   return (
     <>
-      <Space
+      <Flex
         style={{
-          height: '80px',
-          display: 'flex',
           alignItems: 'center',
           paddingLeft: 10,
           color: '#4e9fc5',
         }}
       >
         <h2>Chats</h2>
-      </Space>
+      </Flex>
 
       <ContactListStyled>
         {contacts.map(contact => (

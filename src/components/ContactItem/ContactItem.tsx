@@ -6,7 +6,7 @@ import {
   IMGStyled,
 } from './ContactItem.styled';
 import { IContact } from '../../interfaces/interfaces';
-import { Space } from 'antd';
+import { Flex } from 'antd';
 
 interface IProps {
   contact: IContact;
@@ -28,26 +28,36 @@ export const ContactItem = ({ contact, onContactClick }: IProps) => {
         <AiOutlineCheckCircleStyled />
       </Box>
 
-      <Space
+      <Flex
         style={{
-          marginLeft: 20,
-          display: 'flex',
-          justifyContent: 'center',
+          margin: '0 0 0 20px ',
+          justifyContent: 'flex-start',
+          flexDirection: 'column',
           height: 50,
+          width: '50px',
+          flexGrow: 1,
+          alignItems: 'start',
         }}
       >
-        <p>{name}</p>
+        <p style={{ margin: 0 }}>{name}</p>
         {messages.length > 0 && (
-          <Space
-            style={{ maxHeight: 20, overflow: 'hidden', color: '#767676' }}
+          <div
+            style={{
+              maxHeight: 20,
+              maxWidth: '100%',
+              overflowX: 'hidden',
+              color: '#767676',
+              whiteSpace: 'nowrap',
+              textOverflow: 'ellipsis',
+            }}
           >
             {messages[messages.length - 1].value}
-          </Space>
+          </div>
         )}
-      </Space>
-      <Box ml="auto">
+      </Flex>
+      <div style={{ marginLeft: 'auto' }}>
         <TimeOfLastMessage messages={messages} />
-      </Box>
+      </div>
     </ContactItemStyled>
   );
 };

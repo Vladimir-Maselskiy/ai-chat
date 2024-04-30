@@ -1,6 +1,6 @@
 import { IContact } from '../interfaces/interfaces';
 
-export const sortContacts = (
+export const setSortedContacts = (
   contacts: IContact[],
   setContacts: React.Dispatch<React.SetStateAction<IContact[]>>
 ) => {
