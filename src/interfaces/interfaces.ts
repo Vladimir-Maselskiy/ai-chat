@@ -9,7 +9,7 @@ export interface IContact {
 export interface IMessage {
   id: string;
   type: 'incoming' | 'outgoing';
-  createdAT: string;
+  createdAT: number;
   value: string;
   role?: 'user' | 'assistant';
 }

@@ -9,14 +9,21 @@ import {
 } from './MessageCreator.styled';
 import { IContact } from '../../interfaces/interfaces';
 import React from 'react';
-import { Space } from 'antd';
+import { Flex, Space } from 'antd';
+import { useThemeStore } from '../../store/store';
 
 interface IProp {
   currentContact: IContact;
+  setCurrentContact: React.Dispatch<React.SetStateAction<IContact | null>>;
   setContacts: React.Dispatch<React.SetStateAction<IContact[]>>;
 }
 
-export const MessageCreator = ({ currentContact, setContacts }: IProp) => {
+export const MessageCreator = ({
+  currentContact,
+  setCurrentContact,
+  setContacts,
+}: IProp) => {
+  const theme = useThemeStore(state => state.theme);
   const onSubmit = (evt: any) => {
     evt.preventDefault();
     const outgoingMessage = evt.target.elements.name.value;
@@ -24,9 +31,10 @@ export const MessageCreator = ({ currentContact, setContacts }: IProp) => {
     const outgoingMessageObj = {
       id: nanoid(),
       type: 'outgoing' as 'outgoing' | 'incoming',
-      createdAT: Date.now().toString(),
+      createdAT: Date.now(),
       value: outgoingMessage,
     };
+
     setContacts(prevState => {
       return prevState.map(contact => {
         if (contact.id === currentContact.id) {
@@ -46,12 +54,20 @@ export const MessageCreator = ({ currentContact, setContacts }: IProp) => {
       });
     });
 
+    setCurrentContact(prev => {
+      if (!prev) return null;
+      return {
+        ...prev,
+        messages: [...prev.messages, outgoingMessageObj],
+      };
+    });
+
     axios.get('https://api.chucknorris.io/jokes/random').then(resp => {
       const { id, value } = resp.data;
       const incomingMessageObj = {
         id,
         type: 'incoming' as 'outgoing' | 'incoming',
-        createdAT: Date.now().toString(),
+        createdAT: Date.now(),
         value,
       };
       setTimeout(
@@ -74,6 +90,13 @@ export const MessageCreator = ({ currentContact, setContacts }: IProp) => {
               return contact;
             });
           });
+          setCurrentContact(prev => {
+            if (!prev) return null;
+            return {
+              ...prev,
+              messages: [...prev.messages, incomingMessageObj],
+            };
+          });
         },
         5000 + Math.random() * 50
       );
@@ -82,13 +105,13 @@ export const MessageCreator = ({ currentContact, setContacts }: IProp) => {
   };
 
   return (
-    <Space
+    <Flex
       style={{
         position: 'relative',
         bottom: 0,
         width: '100%',
         height: 90,
-        background: '#f5f5f5',
+        background: theme === 'light' ? '#f5f5f5' : '#1e1f5a',
         borderTop: '1px solid #ccc',
         display: 'flex',
         alignItems: 'center',
@@ -106,6 +129,6 @@ export const MessageCreator = ({ currentContact, setContacts }: IProp) => {
           <MdOutlineSendStyled size={20} />
         </ButtonStyled>
       </FormStyled>
-    </Space>
+    </Flex>
   );
 };

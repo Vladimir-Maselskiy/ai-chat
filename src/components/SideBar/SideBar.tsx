@@ -1,15 +1,13 @@
-import { Anonymous } from '@/Anonymous/Anonymous';
-import { ContactList } from '@/ContactList/ContactList';
-import { Filter } from '@/Filter/Filter';
-import { SwitchTheme } from '@/SwitchTheme/SwitchTheme';
-import { Flex } from 'antd';
-import { SideBarStyled } from './SideBar.styled';
 import { useEffect, useRef, useState } from 'react';
-import { getVisibleContacts } from '../../utils/getVisibleContacts';
 import axios from 'axios';
+import { Flex, Layout } from 'antd';
+import { useThemeStore } from '../../store/store';
 import { IContact } from '../../interfaces/interfaces';
+import { ContactList } from '@/ContactList/ContactList';
+import { getVisibleContacts } from '../../utils/getVisibleContacts';
 import { setSortedContacts } from '../../utils/setSortedContacts';
 import { getCurrentContactByID } from '../../utils/getCurrentContactByID';
+import { FilterBar } from '@/FilterBar/FilterBar';
 
 interface IProps {
   contacts: IContact[];
@@ -27,6 +25,9 @@ export const SideBar = ({
   const [visibleСontacts, setVisibleСontacts] = useState<IContact[]>([]);
 
   const emptyArray = useRef(true);
+
+  const theme = useThemeStore(state => state.theme);
+  const { Sider } = Layout;
 
   useEffect(() => {
     setVisibleСontacts(getVisibleContacts(contacts, filter));
@@ -61,36 +62,22 @@ export const SideBar = ({
   }, [data, emptyArray, contacts]);
 
   return (
-    <SideBarStyled theme="light">
-      <Flex style={{ flexDirection: 'column', height: '100%' }}>
-        <Flex
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            minHeight: 140,
-            padding: 20,
-            flexDirection: 'column',
-            background: '#f5f5f5',
-            borderBottom: '1px solid #ccc',
-            minWidth: '100%',
-          }}
-        >
-          <Flex
-            style={{
-              justifyContent: 'space-between',
-            }}
-          >
-            <Anonymous />
-            <SwitchTheme />
-          </Flex>
-
-          <Filter setFilter={setFilter} />
-        </Flex>
+    <Sider
+      theme={theme}
+      width="33%"
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100vh',
+      }}
+    >
+      <Flex style={{ flexDirection: 'column', height: '100%', width: '100%' }}>
+        <FilterBar setFilter={setFilter} />
         <ContactList
           contacts={visibleСontacts}
           onContactClick={onContactClick}
         />
       </Flex>
-    </SideBarStyled>
+    </Sider>
   );
 };

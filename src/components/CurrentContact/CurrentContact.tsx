@@ -4,6 +4,7 @@ import {
 } from '@/ContactItem/ContactItem.styled';
 import { IContact } from '../../interfaces/interfaces';
 import { Space } from 'antd';
+import { useThemeStore } from '../../store/store';
 
 interface IProps {
   currentContact: IContact;
@@ -11,6 +12,7 @@ interface IProps {
 
 export const CurrentContact = ({ currentContact }: IProps) => {
   const { id, name, avatar } = currentContact;
+  const theme = useThemeStore(state => state.theme);
   return (
     id && (
       <Space
@@ -21,7 +23,8 @@ export const CurrentContact = ({ currentContact }: IProps) => {
           height: 70,
           borderBottom: '1px solid #ccc',
           padding: 10,
-          background: '#f5f5f5',
+          background: theme === 'light' ? '#f5f5f5' : '#1e1f5a',
+          color: theme === 'light' ? '#494848' : 'white',
         }}
       >
         <Space style={{ position: 'relative', width: 40 }}>
