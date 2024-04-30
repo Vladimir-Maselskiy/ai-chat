@@ -1,6 +1,10 @@
 import styled from 'styled-components';
 
-export const MessageTimeStyled = styled.div`
+interface IProps {
+  type: 'incoming' | 'outgoing';
+}
+
+export const MessageTimeStyled = styled.div<IProps>`
   position: absolute;
   display: inline;
   bottom: 0;
