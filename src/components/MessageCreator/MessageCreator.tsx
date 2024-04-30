@@ -9,7 +9,7 @@ import {
 } from './MessageCreator.styled';
 import { IContact } from '../../interfaces/interfaces';
 import React from 'react';
-import { Flex, Space } from 'antd';
+import { Flex } from 'antd';
 import { useThemeStore } from '../../store/store';
 
 interface IProp {

@@ -1,4 +1,3 @@
-import { Box } from '@/Box/Box';
 import { TimeOfLastMessage } from '@/TimeOfLastMessage/TimeOfLastMessage';
 import {
   AiOutlineCheckCircleStyled,
@@ -17,7 +16,7 @@ export const ContactItem = ({ contact, onContactClick }: IProps) => {
   const { id, name, avatar, messages } = contact;
   return (
     <ContactItemStyled id={id} onClick={() => onContactClick(id)}>
-      <Box position="relative">
+      <div style={{ position: 'relative' }}>
         <IMGStyled
           loading="lazy"
           src={avatar}
@@ -26,7 +25,7 @@ export const ContactItem = ({ contact, onContactClick }: IProps) => {
           height="40px"
         />
         <AiOutlineCheckCircleStyled />
-      </Box>
+      </div>
 
       <Flex
         style={{

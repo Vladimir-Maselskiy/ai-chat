@@ -1,7 +1,6 @@
 import { MoonOutlined, SunOutlined } from '@ant-design/icons';
 import { Switch } from 'antd';
 import { useThemeStore } from '../../store/store';
-import { useEffect, useState } from 'react';
 
 export const SwitchTheme = () => {
   const { theme, setTheme } = useThemeStore();

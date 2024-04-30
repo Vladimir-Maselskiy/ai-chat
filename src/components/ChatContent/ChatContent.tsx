@@ -1,4 +1,3 @@
-import { Layout } from 'antd';
 import React from 'react';
 import { IContact } from '../../interfaces/interfaces';
 import { CurrentContact } from '@/CurrentContact/CurrentContact';
@@ -6,7 +5,6 @@ import { Messages } from '@/Messages/Messages';
 import { MessageCreator } from '@/MessageCreator/MessageCreator';
 import { WellcomeMessage } from '@/WellcomeMessage/WellcomeMessage';
 import { ContentStyled } from './ChatContent.styled';
-import { backgroundColor } from 'styled-system';
 import { useThemeStore } from '../../store/store';
 
 interface IProps {
